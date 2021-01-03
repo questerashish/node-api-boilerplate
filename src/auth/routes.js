@@ -10,6 +10,16 @@ router.post('/login', validators.login, (req, res, next) => authController.login
 
 router.get('/session', authMiddlewares.validateSession, (req, res, next) => authController.sessionData(req, res, next));
 
+router.post('/role',
+    authMiddlewares.validateWithRole(Roles.Admin),
+    (req, res, next) => authController.addRole(req, res, next));
+
+
+router.post('/role',
+    authMiddlewares.validateWithRole(Roles.Admin),
+    (req, res, next) => authController.removeRole(req, res, next));
+
+
 router.use(oauthRoutes);
 
 module.exports = router;

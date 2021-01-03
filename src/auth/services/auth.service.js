@@ -1,4 +1,4 @@
-const { User, Role } = require('./../../models');
+const { User, Role, UserRole } = require('./../../models');
 const bcryptManager = require('./../../utils/BcryptManager');
 
 class AuthService {
@@ -45,6 +45,26 @@ class AuthService {
             password: otherUtil.getRandomString()
         });
         return user;
+    }
+
+    async addRole(userId, roleId) {
+        let existingRole = await UserRole.findOrCreate({
+            where: {
+                userId: userId,
+                roleId: roleId,
+            }
+        });
+        return existingRole[0];
+    }
+
+    async removeRole(userId, roleId) {
+        let removed = await UserRole.destroy({
+            where: {
+                userId,
+                roleId,
+            }
+        })
+        return removed;
     }
 
 }
